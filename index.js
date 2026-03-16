@@ -20,7 +20,7 @@ function getRandomDog() {
 
 // Ejercicio 3
 function getAllImagesByBreed() {
-  return fetch("https://dog.ceo/api/breed/komondor/images/")
+  return fetch("https://dog.ceo/api/breed/komondor/images")
     .then((res) => res.json())
     .then((data) => {
       return data.message;
@@ -30,7 +30,7 @@ function getAllImagesByBreed() {
 
 // Ejercicio 4
 function getAllImagesByBreed2(raza) {
-  return fetch(`https://dog.ceo/api/breed/${raza}/images/`)
+  return fetch(`https://dog.ceo/api/breed/${raza}/images`)
     .then((res) => res.json())
     .then((data) => {
       return data.message;
@@ -47,7 +47,7 @@ function getGitHubUserProfile(usuario) {
 // getGitHubUserProfile("asolermaria").then((data) => console.log(data));
 
 // Ejercicio 6
-function getGitHubUserProfile(usuario) {
+function printGithubUserProfile(usuario) {
   return fetch(`https://api.github.com/users/${usuario}`)
     .then((res) => res.json())
     .then((data) => {
@@ -69,11 +69,23 @@ function getAndPrintGitHubUserProfile(usuario) {
     .then((res) => res.json())
     .then((data) => {
       const tarjetaHTML = `<section>
-                            <img src="${data.avatar_url}" alt="imagen de usuario">
+                            <img src="${data.avatar_url}" alt="${data.name}">
                             <h1>${data.name}</h1>
                             <p>Public repos: ${data.public_repos}</p>
                             </section>`;
       return tarjetaHTML;
     });
 }
-getAndPrintGitHubUserProfile("asolermaria").then((html) => console.log(html));
+// getAndPrintGitHubUserProfile("asolermaria").then((html) => console.log(html));
+
+// Ejercicio 8
+const botonBuscar = document.getElementById("search8");
+const inputUsuario = document.getElementById("input8");
+
+botonBuscar.addEventListener("click", () => {
+  const usuario = inputUsuario.value;
+
+  getAndPrintGitHubUserProfile(usuario).then((html) => {
+    document.getElementById("perfil-github").innerHTML = html;
+  });
+});
