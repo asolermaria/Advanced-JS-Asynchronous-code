@@ -55,10 +55,25 @@ function getGitHubUserProfile(usuario) {
         img: data.avatar_url,
         name: data.name,
       };
-
       const container = document.getElementById("perfil-github");
       container.innerHTML = `<img src="${data.avatar_url}">
                             <p>${data.name}</p>`;
       return perfil;
     });
 }
+// getGitHubUserProfile("asolermaria").then((data) => console.log(data));
+
+// Ejercicio 7
+function getAndPrintGitHubUserProfile(usuario) {
+  return fetch(`https://api.github.com/users/${usuario}`)
+    .then((res) => res.json())
+    .then((data) => {
+      const tarjetaHTML = `<section>
+                            <img src="${data.avatar_url}" alt="imagen de usuario">
+                            <h1>${data.name}</h1>
+                            <p>Public repos: ${data.public_repos}</p>
+                            </section>`;
+      return tarjetaHTML;
+    });
+}
+getAndPrintGitHubUserProfile("asolermaria").then((html) => console.log(html));
