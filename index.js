@@ -4,19 +4,23 @@
 function getAllBreeds() {
   return fetch("https://dog.ceo/api/breeds/list/all")
     .then((res) => res.json())
-    .then((data) => {
-      return Object.keys(data.message);
+    .then((data) => Object.keys(data.message))
+    .catch((error) => {
+      console.error("Error fetching data:", error);
     });
 }
+// getAllBreeds().then((data)=>console.log(data))
 
 // Ejercicio 2
 function getRandomDog() {
   return fetch("https://dog.ceo/api/breeds/image/random")
     .then((res) => res.json())
-    .then((data) => {
-      return data.message;
+    .then((data) => data.message)
+    .catch((error) => {
+      console.error("Error fetching data:", error);
     });
 }
+// getRandomDog().then((data) => console.log(data));
 
 // Ejercicio 3
 function getAllImagesByBreed() {
@@ -24,6 +28,9 @@ function getAllImagesByBreed() {
     .then((res) => res.json())
     .then((data) => {
       return data.message;
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
     });
 }
 // getAllImagesByBreed().then((data) => console.log(data));
@@ -34,15 +41,21 @@ function getAllImagesByBreed2(raza) {
     .then((res) => res.json())
     .then((data) => {
       return data.message;
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
     });
 }
 // getAllImagesByBreed2("dalmatian").then((data) => console.log(data));
 
-// Ejercicio 5
+//Ejercicio 5
 function getGitHubUserProfile(usuario) {
   return fetch(`https://api.github.com/users/${usuario}`)
     .then((res) => res.json())
-    .then((data) => data);
+    .then((data) => data)
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
 }
 // getGitHubUserProfile("asolermaria").then((data) => console.log(data));
 
@@ -59,6 +72,9 @@ function printGithubUserProfile(usuario) {
       container.innerHTML = `<img src="${data.avatar_url}">
                             <p>${data.name}</p>`;
       return perfil;
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
     });
 }
 // getGitHubUserProfile("asolermaria").then((data) => console.log(data));
@@ -74,6 +90,9 @@ function getAndPrintGitHubUserProfile(usuario) {
                             <p>Public repos: ${data.public_repos}</p>
                             </section>`;
       return tarjetaHTML;
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
     });
 }
 // getAndPrintGitHubUserProfile("asolermaria").then((html) => console.log(html));
@@ -87,5 +106,28 @@ botonBuscar.addEventListener("click", () => {
 
   getAndPrintGitHubUserProfile(usuario).then((html) => {
     document.getElementById("perfil-github").innerHTML = html;
+  })
+  .catch((error) => {
+      console.error("Error fetching data:", error);
   });
 });
+
+// Ejercicio 9
+function fetchGithubUsers(usuarios) {
+  const promesas = usuarios.map((usuario) =>
+    fetch(`https://api.github.com/users/${usuario}`)
+  );
+  return Promise.all(promesas)
+    .then((responses) => Promise.all(responses.map((res) => res.json())))
+    .then((usuarios) => {
+      return usuarios.map((usuario) => ({
+        name: usuario.name || usuario.login,
+        url: usuario.url,
+      }));
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+      return [];
+    });
+}
+// fetchGithubUsers(["asolermaria", "octocat"]).then((usuarios)=> console.log(usuarios));
